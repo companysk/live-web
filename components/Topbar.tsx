@@ -1,51 +1,52 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { UploadModal } from "./UploadModal";
 import { LoginModal } from "./LoginModal";
 
-interface TopbarProps {
+interface Props {
   defaultSearch?: string;
 }
 
-export function Topbar({ defaultSearch = "" }: TopbarProps) {
-  const router = useRouter();
-  const [query, setQuery] = useState(defaultSearch);
+export function Topbar({ defaultSearch = "" }: Props) {
   const [showUpload, setShowUpload] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (query.trim()) router.push(`/search?q=${encodeURIComponent(query.trim())}`);
-  }
 
   return (
     <>
       <header className="topbar">
         {/* Logo */}
-        <Link href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}>
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none", flexShrink: 0 }}>
           <div className="logo-box" />
           <span style={{ fontSize: 19, fontWeight: 700, color: "var(--text)", letterSpacing: "-0.5px" }}>
-            ViewTube<sup style={{ fontSize: 10, fontWeight: 400, color: "var(--dim)" }}>IN</sup>
+            PornTube<sup style={{ fontSize: 10, fontWeight: 400, color: "var(--dim)" }}>IN</sup>
           </span>
         </Link>
 
-        {/* Search */}
+        {/*
+          ── SEARCH FIX ──
+          Using a real HTML <form> with action="/search" and name="q".
+          This means:
+          • Pressing Enter submits the form and navigates to /search?q=...
+          • Clicking the search button does the same
+          • Works with or without JavaScript
+          • defaultValue pre-fills the input on the search page
+          • The search page reads q from searchParams (SSR, no state needed)
+        */}
         <form
-          onSubmit={handleSearch}
-          style={{ flex: 1, maxWidth: 560, display: "flex", margin: "0 auto" }}
+          action="/search"
+          method="GET"
+          className="search-form"
           role="search"
         >
           <input
             className="search-input"
             type="search"
             name="q"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search"
+            defaultValue={defaultSearch}
+            placeholder="Search videos, channels, topics..."
             aria-label="Search ViewTube"
             autoComplete="off"
           />
@@ -54,11 +55,14 @@ export function Topbar({ defaultSearch = "" }: TopbarProps) {
           </button>
         </form>
 
-        {/* Actions */}
-        <div style={{ display: "flex", gap: 4, marginLeft: "auto", alignItems: "center" }}>
+        {/* Right actions */}
+        <div style={{ display: "flex", gap: 6, marginLeft: "auto", alignItems: "center", flexShrink: 0 }}>
+          <a href="/shop" className="hide-sm" style={{ background:"#ff9900", color:"#000", padding:"6px 14px", borderRadius:20, fontSize:13, fontWeight:700, textDecoration:"none", whiteSpace:"nowrap", display:"flex", alignItems:"center", gap:5 }}>
+            🛒 Shop
+          </a>
           <button
-            className="icon-btn hide-mobile"
-            onClick={() => (loggedIn ? setShowUpload(true) : setShowLogin(true))}
+            className="icon-btn hide-sm"
+            onClick={() => loggedIn ? setShowUpload(true) : setShowLogin(true)}
             title="Upload video"
             aria-label="Upload video"
           >
@@ -70,8 +74,8 @@ export function Topbar({ defaultSearch = "" }: TopbarProps) {
           {loggedIn ? (
             <button
               onClick={() => setLoggedIn(false)}
-              style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--red)", border: "none", cursor: "pointer", color: "#fff", fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}
-              aria-label="Account"
+              style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--yellow)", border: "none", cursor: "pointer", color: "#fff", fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}
+              aria-label="Sign out"
             >
               U
             </button>
@@ -84,7 +88,12 @@ export function Topbar({ defaultSearch = "" }: TopbarProps) {
       </header>
 
       {showUpload && <UploadModal onClose={() => setShowUpload(false)} />}
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} onLogin={() => { setLoggedIn(true); setShowLogin(false); }} />}
+      {showLogin && (
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          onLogin={() => { setLoggedIn(true); setShowLogin(false); }}
+        />
+      )}
     </>
   );
 }

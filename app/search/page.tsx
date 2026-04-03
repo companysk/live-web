@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { VIDEOS } from "@/lib/videos";
+import Link from "next/link";
+import { searchVideos } from "@/lib/videos";
 import { Topbar } from "@/components/Topbar";
 import { Sidebar } from "@/components/Sidebar";
-import Link from "next/link";
 
 interface Props {
   searchParams: { q?: string };
@@ -11,86 +11,81 @@ interface Props {
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const q = searchParams?.q ?? "";
   return {
-    title: q ? `"${q}" — Search Results | ViewTube` : "Search | ViewTube",
-    description: q
-      ? `ViewTube search results for "${q}". Find videos about ${q} — tutorials, entertainment, news and more.`
-      : "Search ViewTube for videos, channels, and more.",
-    robots: { index: false, follow: true }, // search pages shouldn't be indexed
+    title: q ? `"${q}" — Search Results` : "Search",
+    description: q ? `ViewTube search results for "${q}". Find videos about ${q}.` : "Search ViewTube for videos.",
+    robots: { index: false, follow: true },
   };
 }
 
 export default function SearchPage({ searchParams }: Props) {
-  const q = (searchParams?.q ?? "").toLowerCase().trim();
-  const results = q
-    ? VIDEOS.filter(
-        (v) =>
-          v.title.toLowerCase().includes(q) ||
-          v.channel.toLowerCase().includes(q) ||
-          v.category.toLowerCase().includes(q) ||
-          v.tags.some((t) => t.includes(q))
-      )
-    : [];
+  const q = searchParams?.q ?? "";
+  const results = searchVideos(q);
 
   return (
     <>
-      <Topbar defaultSearch={searchParams?.q} />
+      {/* Pass current query so the topbar input is pre-filled */}
+      <Topbar defaultSearch={q} />
       <div style={{ display: "flex" }}>
         <Sidebar />
         <main style={{ flex: 1, padding: "20px 24px 60px", minWidth: 0 }}>
+
           {q ? (
             <>
-              <p style={{ fontSize: 14, color: "var(--dim)", marginBottom: 16 }}>
-                About <strong style={{ color: "var(--text)" }}>{results.length}</strong> results for &quot;<strong style={{ color: "var(--text)" }}>{searchParams?.q}</strong>&quot;
+              <p style={{ fontSize: 14, color: "var(--dim)", marginBottom: 20 }}>
+                About{" "}
+                <strong style={{ color: "var(--text)" }}>{results.length}</strong>{" "}
+                results for{" "}
+                <strong style={{ color: "var(--text)" }}>&quot;{q}&quot;</strong>
               </p>
+
               {results.length > 0 ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {results.map((v) => (
-                    <Link
-                      key={v.id}
-                      href={`/video/${v.slug}`}
-                      style={{ display: "flex", gap: 16, padding: 10, borderRadius: 10, transition: "background .15s", textDecoration: "none" }}
-                      className="sresult-link"
-                    >
-                      <div
-                        style={{
-                          width: 220, minWidth: 220, aspectRatio: "16/9",
-                          borderRadius: 10, background: v.bg,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: 44, flexShrink: 0, position: "relative", overflow: "hidden",
-                        }}
-                      >
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  {results.map(v => (
+                    <Link key={v.id} href={`/video/${v.slug}`} className="sresult">
+                      {/* Thumbnail */}
+                      <div style={{ width: 220, minWidth: 220, aspectRatio: "16/9", borderRadius: 10, background: v.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44, flexShrink: 0, position: "relative", overflow: "hidden" }}>
                         {v.emoji}
                         <div style={{ position: "absolute", bottom: 4, right: 4, background: "rgba(0,0,0,0.88)", color: "#fff", fontSize: 11, fontWeight: 600, padding: "2px 5px", borderRadius: 3 }}>
                           {v.duration}
                         </div>
                       </div>
-                      <div>
-                        <h2 style={{ fontSize: 16, fontWeight: 500, marginBottom: 5, color: "var(--text)" }}>{v.title}</h2>
-                        <p style={{ fontSize: 13, color: "var(--dim)", marginBottom: 6 }}>
-                          {v.views} views · {v.ago}
-                        </p>
-                        <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 8 }}>
-                          <div style={{ width: 24, height: 24, borderRadius: "50%", background: v.channelColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: "#fff" }}>
+                      {/* Info */}
+                      <div style={{ minWidth: 0 }}>
+                        <h2 style={{ fontSize: 16, fontWeight: 500, marginBottom: 5, color: "var(--text)", lineHeight: 1.4 }}>{v.title}</h2>
+                        <p style={{ fontSize: 13, color: "var(--dim)", marginBottom: 6 }}>{v.views} views · {v.ago}</p>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                          <div style={{ width: 24, height: 24, borderRadius: "50%", background: v.channelColor, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: "#fff", flexShrink: 0 }}>
                             {v.channelAvatar}
                           </div>
                           <span style={{ fontSize: 13, color: "var(--dim)" }}>{v.channel}</span>
+                          <span style={{ fontSize: 11, color: "var(--dim)", background: "var(--bg3)", padding: "2px 8px", borderRadius: 10 }}>{v.category}</span>
                         </div>
-                        <p style={{ fontSize: 13, color: "var(--dim)", lineHeight: 1.5 }}>
-                          {v.description.substring(0, 130)}...
+                        <p style={{ fontSize: 13, color: "var(--dim)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                          {v.description}
                         </p>
                       </div>
                     </Link>
                   ))}
                 </div>
               ) : (
-                <div style={{ textAlign: "center", padding: "60px 0", color: "var(--dim)", fontSize: 15 }}>
-                  No results found for &quot;<strong style={{ color: "var(--text)" }}>{searchParams?.q}</strong>&quot;
+                <div style={{ textAlign: "center", padding: "80px 0" }}>
+                  <div style={{ fontSize: 60, marginBottom: 16 }}>🔍</div>
+                  <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8, color: "var(--text)" }}>
+                    No results for &quot;{q}&quot;
+                  </h2>
+                  <p style={{ fontSize: 14, color: "var(--dim)", marginBottom: 20 }}>
+                    Try different keywords or check your spelling.
+                  </p>
+                  <Link href="/" style={{ background: "var(--yellow)", color: "#fff", padding: "10px 24px", borderRadius: 20, fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
+                    Back to Home
+                  </Link>
                 </div>
               )}
             </>
           ) : (
-            <div style={{ textAlign: "center", padding: "60px 0", color: "var(--dim)" }}>
-              Enter a search term above to find videos.
+            <div style={{ textAlign: "center", padding: "80px 0" }}>
+              <div style={{ fontSize: 60, marginBottom: 16 }}>🔍</div>
+              <p style={{ fontSize: 16, color: "var(--dim)" }}>Enter a search term above to find videos.</p>
             </div>
           )}
         </main>
