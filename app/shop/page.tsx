@@ -9,15 +9,15 @@ interface Props {
 }
 
 export const metadata: Metadata = {
-  title: "Shop — Top Deals on Tech & Gadgets | ViewTube",
+  title: "Shop — Top Deals on Tech & Gadgets | PornTube",
   description:
     "Discover the best deals on headphones, gaming gear, cameras, microphones, monitors and more. All products link directly to Amazon for fast, trusted delivery.",
   openGraph: {
-    title: "Shop — Top Deals on Tech & Gadgets | ViewTube",
+    title: "Shop — Top Deals on Tech & Gadgets | PornTube",
     description: "Best deals on tech, gaming gear, cameras, and more. Buy on Amazon with one click.",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
-  alternates: { canonical: "https://viewtube.in/shop" },
+  alternates: { canonical: "https://porntube25.vercel.app/shop" },
 };
 
 export default function ShopPage({ searchParams }: Props) {

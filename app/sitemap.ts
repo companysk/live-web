@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { VIDEOS } from "@/lib/videos";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://viewtube.in";
+  const base = "https://porntube25.vercel.app";
   return [
     { url: base, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
     { url: `${base}/search`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },

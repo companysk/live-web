@@ -6,9 +6,9 @@ import { VideoGrid } from "@/components/VideoGrid";
 import { ChipsBar } from "@/components/ChipsBar";
 
 export const metadata: Metadata = {
-  title: "ViewTube — Watch, Learn & Explore Videos",
+  title: "PornTube — Watch, Learn & Explore Videos",
   description: "Discover thousands of free videos — tutorials, gaming, music, science, news and more.",
-  alternates: { canonical: "https://viewtube.in" },
+  alternates: { canonical: "https://porntube25.vercel.app/" },
 };
 
 export default function HomePage({ searchParams }: { searchParams: { cat?: string } }) {
@@ -21,7 +21,7 @@ export default function HomePage({ searchParams }: { searchParams: { cat?: strin
       <div style={{ display: "flex" }}>
         <Sidebar />
         <main style={{ flex: 1, padding: "18px 18px 60px", minWidth: 0 }}>
-          <h1 className="sr-only">{cat === "All" ? "Watch Free Videos Online" : `${cat} Videos`} — ViewTube</h1>
+          <h1 className="sr-only">{cat === "All" ? "Watch Free Videos Online" : `${cat} Videos`} — PornTube</h1>
           <VideoGrid videos={videos} />
         </main>
       </div>

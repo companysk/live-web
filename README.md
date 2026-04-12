@@ -1,4 +1,4 @@
-# ViewTube — Next.js 14 Video Platform
+# PornTube — Next.js 14 Video Platform
 
 YouTube-style video platform with full SEO, HTML5 player (no iframe), and working search.
 
@@ -31,7 +31,7 @@ The search was broken in v1 because the Topbar used `useState` + `router.push()`
 ## File Structure
 
 ```
-viewtube/
+PornTube/
 ├── app/
 │   ├── layout.tsx           Global SEO + metadata
 │   ├── page.tsx             Home feed (SSR + category filter)

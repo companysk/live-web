@@ -12,7 +12,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const q = searchParams?.q ?? "";
   return {
     title: q ? `"${q}" — Search Results` : "Search",
-    description: q ? `ViewTube search results for "${q}". Find videos about ${q}.` : "Search ViewTube for videos.",
+    description: q ? `PornTube search results for "${q}". Find videos about ${q}.` : "Search PornTube for videos.",
     robots: { index: false, follow: true },
   };
 }

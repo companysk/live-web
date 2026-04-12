@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     const upstream = await fetch(url, {
       headers: {
         ...(rangeHeader ? { Range: rangeHeader } : {}),
-        "User-Agent": "Mozilla/5.0 (compatible; ViewTube/1.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; PornTube/1.0)",
       },
     });
 

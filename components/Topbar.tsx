@@ -47,7 +47,7 @@ export function Topbar({ defaultSearch = "" }: Props) {
             name="q"
             defaultValue={defaultSearch}
             placeholder="Search videos, channels, topics..."
-            aria-label="Search ViewTube"
+            aria-label="Search PornTube"
             autoComplete="off"
           />
           <button type="submit" className="search-btn" aria-label="Search">
