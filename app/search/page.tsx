@@ -29,7 +29,7 @@ export default function SearchPage({ searchParams }: Props) {
         <Sidebar />
         <main style={{ flex: 1, padding: "20px 24px 60px", minWidth: 0 }}>
 
-          {q ? (
+          {/* {q ? ( */}
             <>
               <p style={{ fontSize: 14, color: "var(--dim)", marginBottom: 20 }}>
                 About{" "}
@@ -82,12 +82,12 @@ export default function SearchPage({ searchParams }: Props) {
                 </div>
               )}
             </>
-          ) : (
-            <div style={{ textAlign: "center", padding: "80px 0" }}>
+          {/* ) : ( */}
+            {/* <div style={{ textAlign: "center", padding: "80px 0" }}>
               <div style={{ fontSize: 60, marginBottom: 16 }}>🔍</div>
               <p style={{ fontSize: 16, color: "var(--dim)" }}>Enter a search term above to find videos.</p>
             </div>
-          )}
+          )} */}
         </main>
       </div>
     </>

@@ -31,7 +31,7 @@ export function ProductGrid({ products }: { products: Product[] }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 20 }}>
       {products.map(p => {
-        const discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
+        // const discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
         const badge = p.badge ? BADGE_COLORS[p.badge] : null;
 
         return (
@@ -53,11 +53,11 @@ export function ProductGrid({ products }: { products: Product[] }) {
                   {p.badge}
                 </div>
               )}
-              {discount > 0 && (
+              {/* {discount > 0 && (
                 <div style={{ position: "absolute", top: 8, right: 8, background: "#cc0c39", color: "#fff", fontSize: 11, fontWeight: 700, padding: "3px 7px", borderRadius: 20 }}>
                   -{discount}%
                 </div>
-              )}
+              )} */}
             </div>
 
             {/* Info */}
@@ -76,12 +76,12 @@ export function ProductGrid({ products }: { products: Product[] }) {
                 <span style={{ fontSize: 12, color: "var(--dim)" }}>{p.rating} ({p.reviews.toLocaleString()})</span>
               </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 2 }} itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                <span itemProp="price" style={{ fontSize: 20, fontWeight: 700, color: "#ff9900" }}>
+                {/* <span itemProp="price" style={{ fontSize: 20, fontWeight: 700, color: "#ff9900" }}>
                   ₹{p.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                 </span>
                 <span style={{ fontSize: 12, color: "var(--dim)", textDecoration: "line-through" }}>
                   ₹{p.originalPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                </span>
+                </span> */}
                 <meta itemProp="priceCurrency" content="INR" />
                 <meta itemProp="availability" content="https://schema.org/InStock" />
               </div>

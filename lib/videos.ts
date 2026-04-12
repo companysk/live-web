@@ -41,7 +41,7 @@ export function getVideoBySlug(slug: string) { return VIDEOS.find(v => v.slug ==
 export function getRelatedVideos(id: number, limit = 12) { return VIDEOS.filter(v => v.id !== id).slice(0, limit); }
 export function searchVideos(q: string): Video[] {
   const query = q.toLowerCase().trim();
-  if (!query) return [];
+  if (!query) return VIDEOS;
   return VIDEOS.filter(v =>
     v.title.toLowerCase().includes(query) ||
     v.channel.toLowerCase().includes(query) ||
